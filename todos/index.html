@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+
+    <title>NodeJS :: Todos</title>
+
+    <meta name="author" content="Mirko Akov">
+</head>
+<body>
+
+    <ul id="todos">
+        {{todos}}
+    </ul>
+
+    <form action="" method="post">
+        <input type="text" name="todo" placeholder="Enter your new todo" autofocus>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        var todos = document.getElementById('todos');
+
+        todos.addEventListener('click', function (e) {
+            var target = e.target;
+
+            if (target.tagName == 'BUTTON') {
+                deleteTodo(target.value);
+            }
+            console.log(target.tagName, target.value);
+        });
+
+        function deleteTodo(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('DELETE', '/', true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.status === 200) {
+                    location.reload();
+                }
+            };
+
+            xhr.send('index=' + id);
+        }
+    </script>
+</body>
+</html>
