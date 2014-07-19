@@ -28,19 +28,16 @@
             if (target.tagName == 'BUTTON') {
                 deleteTodo(target.value);
             }
-            console.log(target.tagName, target.value);
         });
 
         function deleteTodo(id) {
             var xhr = new XMLHttpRequest();
-            xhr.open('DELETE', '/', true);
 
             xhr.onreadystatechange = function () {
-                if (xhr.status === 200) {
-                    location.reload();
-                }
+                if (xhr.status === 200) location.reload();
             };
 
+            xhr.open('DELETE', '/', true);
             xhr.send('index=' + id);
         }
     </script>

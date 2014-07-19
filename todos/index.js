@@ -8,9 +8,7 @@ var http = require('http'),
 http.createServer(function (req, res) {
     console.log(req.url, req.method);
 
-    if (req.url != '/') {
-        return notFound(res);
-    }
+    if (req.url != '/') return notFound(res);
 
     switch (req.method) {
         case 'GET':
@@ -29,11 +27,12 @@ http.createServer(function (req, res) {
             badRequest(res);
     }
 }).listen(8000, function () {
-    console.log("Server is listening on port 8000");
+    console.log("Server is running on localhost:8000");
 });
 
 function show(res) {
-    var html = '';
+    var html = '',
+        todosHtml = '';
 
     fs.readFile(path.join(root, 'index.html'), function (error, data) {
         if (error) {
@@ -41,9 +40,11 @@ function show(res) {
             return badRequest(res);
         }
 
-        html = data.toString().replace('{{todos}}', todos.map(function (todo, index) {
+        todosHtml = todos.map(function (todo, index) {
             return '<li>' + todo + '<button value="' + index + '">Delete</button></li>';
-        }).join(''));
+        }).join('');
+
+        html = data.toString().replace('{{todos}}', todosHtml);
 
         res.setHeader('Content-Type', 'text/html');
         res.setHeader('Content-Length', Buffer.byteLength(html));
@@ -63,13 +64,8 @@ function add(req, res) {
 
 function remove(req, res) {
     parseRequestData(req, function (data) {
-        if (typeof data.index === undefined) {
-            return badRequest(res);
-        }
-
-        if (typeof todos[data.index] === undefined) {
-            return notFound(res);
-        }
+        if (!data.index)        return badRequest(res);
+        if (!todos[data.index]) return notFound(res);
 
         todos.splice(data.index, 1);
         res.end('ok');
@@ -90,7 +86,7 @@ function parseRequestData(req, callback) {
 }
 
 function badRequest(res, error) {
-    if (typeof error === undefined) error = 'Bad Request';
+    error = error || 'Bad Request';
 
     res.setHeader('Content-Type', 'text/plain');
     res.statusCode = 400;
