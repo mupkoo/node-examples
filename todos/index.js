@@ -1,9 +1,9 @@
-var http = require('http'),
-    fs = require('fs'),
-    path = require('path'),
-    qs = require('querystring'),
-    todos = [],
-    root = __dirname;
+var http = require('http');
+var fs = require('fs');
+var path = require('path');
+var qs = require('querystring');
+var todos = [];
+var root = __dirname;
 
 http.createServer(function (req, res) {
     console.log(req.url, req.method);
