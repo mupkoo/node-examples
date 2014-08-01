@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+
+    <title>{{pageTitle}}Folder Listing Server</title>
+
+    <meta name="description" content="Folder Listing server">
+    <meta name="author" content="Mirko Akov">
+
+    <style>
+        /* #FFAA5C #DA727E #AC6C82 #685C79 #455C7B */
+
+        body {
+            color: #AC6C82;
+            font-family: 'Helvetica Neue';
+            font-size: 14px;
+        }
+
+        .wrapper {
+            margin: 40px auto;
+            width: 600px;
+        }
+
+        h1 {
+            color: #455C7B;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        th {
+            color: #455C7B;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        tr:hover td,
+        tr:hover th {
+            background-color: rgba(255, 170, 92, .16);
+        }
+
+        td, th {
+            border-bottom: 1px solid #eee;
+            padding: 8px 3px;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+            padding: 5px 0;
+        }
+
+        a {
+            color: #AC6C82;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>{{folderName}}</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Kind</th>
+                    <th>Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#">Folder</a></td>
+                    <td>folder</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td><a href="#">Folder</a></td>
+                    <td>folder</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td><a href="#">Folder</a></td>
+                    <td>folder</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td><a href="#">Some file.txt</a></td>
+                    <td>document</td>
+                    <td>--</td>
+                </tr>
+                {{files}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
