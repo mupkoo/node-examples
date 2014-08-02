@@ -59,6 +59,22 @@ function parseFiles(res, folder, files) {
     var filesLength = files.length;
     var temp, filePath;
 
+    if (folder !== '') {
+        var segments = folder.split(path.sep);
+        var link;
+
+        segments.pop();
+        link = segments.join(path.sep);
+
+        data.folders.push({
+            link: (link === '' ? '/' : link),
+            name: '..',
+            type: 'directory',
+            modifiedAt: '',
+            modifiedAgo: '--'
+        });
+    }
+
     files.forEach(function (file) {
         filePath = path.join(absPath, file);
 
