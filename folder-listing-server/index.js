@@ -18,7 +18,7 @@ var rowTemplate = fs.readFileSync(path.join(__dirname, '_row.html'), { encoding:
 
 var server = http.createServer(function (req, res) {
     var absPath;
-    var pathname = url.parse(req.url).pathname;
+    var pathname = decodeURI(url.parse(req.url).pathname.replace(/\+/g, '%20'));
 
     if (pathname == '/') {
         parseFolder(res, '');
@@ -87,7 +87,7 @@ function parseFiles(res, folder, files) {
 
         fs.stat(filePath, function (err, stats) {
             temp = {
-                link: folder + '/' + file,
+                link: escapeLink(folder + '/' + file),
                 name: file
             };
 
@@ -126,7 +126,7 @@ function renderFolder(res, folder, data) {
     folder.split('/').forEach(function (segment) {
         if (segment !== '') {
             prevLink += '/' + segment;
-            folderLinks += ' <a href="' + prevLink + '">' + segment + '</a> /';
+            folderLinks += ' <a href="' + escapeLink(prevLink) + '">' + segment + '</a> /';
         }
     });
 
@@ -157,6 +157,10 @@ function sendFile(res, file) {
         res.writeHead(200, { 'Content-Type': mime.lookup(file) });
         res.end(data);
     });
+}
+
+function escapeLink(link) {
+    return encodeURI(link).replace(/%20/g, '+');
 }
 
 server.listen(8001, function () {
