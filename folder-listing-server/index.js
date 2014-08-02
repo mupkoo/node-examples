@@ -9,6 +9,9 @@ var errors = require('./libs/errors.js');
 
 var staticRoot = path.join(__dirname, 'static');
 
+// Check if a folder param is sent
+if (process.argv[2]) staticRoot = process.argv[2];
+
 // Preload the tempaltes
 var templateCache = fs.readFileSync(path.join(__dirname, 'index.html'), { encoding: 'utf8' });
 var rowTemplate = fs.readFileSync(path.join(__dirname, '_row.html'), { encoding: 'utf8' });
