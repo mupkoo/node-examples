@@ -2,7 +2,9 @@ var http = require('http');
 var path = require('path');
 var url = require('url');
 var fs = require('fs');
+var moment = require('moment');
 var errors = require('./libs/errors.js');
+
 var templateCache = fs.readFileSync(path.join(__dirname, 'index.html'), { encoding: 'utf8' });
 var row = fs.readFileSync(path.join(__dirname, '_line.html'), { encoding: 'utf8' });
 var staticRoot = path.join(__dirname, 'static');
@@ -72,7 +74,8 @@ function renderRow(data) {
     return row.replace('{{link}}', data.link)
         .replace('{{name}}', data.name)
         .replace('{{type}}', data.type)
-        .replace('{{modifiedAt}}', data.modifiedAt);
+        .replace('{{fullDate}}', data.modifiedAt)
+        .replace('{{modifiedAt}}', moment(data.modifiedAt).fromNow());
 }
 
 server.listen(8001, function () {
