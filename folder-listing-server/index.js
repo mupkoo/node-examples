@@ -109,16 +109,25 @@ function parseFiles(res, folder, files) {
 
 function renderFolder(res, folder, data) {
     var rows = '';
+    var folderLinks = '';
+    var prevLink = '';
 
     data.folders.concat(data.files).forEach(function (record) {
         rows += renderRow(record);
+    });
+
+    folder.split('/').forEach(function (segment) {
+        if (segment !== '') {
+            prevLink += '/' + segment;
+            folderLinks += ' <a href="' + prevLink + '">' + segment + '</a> /';
+        }
     });
 
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(
         templateCache
             .replace('{{pageTitle}}', folder)
-            .replace('{{folderName}}', folder)
+            .replace('{{folderLinks}}', folderLinks)
             .replace('{{rows}}', rows)
     );
 }
