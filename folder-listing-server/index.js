@@ -20,15 +20,19 @@ var server = http.createServer(function (req, res) {
         absPath = path.join(staticRoot, pathname);
 
         fs.exists(absPath, function (exists) {
-            fs.stat(absPath, function (err, stats) {
-                if (err) return errors.send500(res);
+            if (exists) {
+                fs.stat(absPath, function (err, stats) {
+                    if (err) return errors.send500(res);
 
-                if (stats.isDirectory()) {
-                    renderDirectory(res, pathname);
-                } else {
-                    sendFile(res, pathname);
-                }
-            });
+                    if (stats.isDirectory()) {
+                        renderDirectory(res, pathname);
+                    } else {
+                        sendFile(res, pathname);
+                    }
+                });
+            } else {
+                errors.send404(res);
+            }
         });
     }
 });
@@ -39,7 +43,7 @@ function renderDirectory(res, dir) {
     var rowsHtml = '';
 
     fs.readdir(absPath, function (err, files) {
-        if (err) return send500(res);
+        if (err) return errors.send500(res);
 
         var filesLength = files.length;
         var totalIterations = 0;
@@ -90,7 +94,7 @@ function sendFile(res, file) {
     var absPath = path.join(staticRoot, file);
 
     fs.readFile(absPath, function (err, data) {
-        if (err) return send404(res);
+        if (err) return errors.send404(res);
 
         res.writeHead(200, { 'Content-Type': mime.lookup(file) });
         res.end(data);
