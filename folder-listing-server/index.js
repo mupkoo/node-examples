@@ -78,6 +78,10 @@ function parseFiles(res, folder, files) {
         });
     }
 
+    if (files.length === 0) {
+        renderFolder(res, folder, data);
+    }
+
     files.forEach(function (file) {
         filePath = path.join(absPath, file);
 
